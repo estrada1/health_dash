@@ -76,8 +76,8 @@ function formatDate(timestamp: string): string {
   });
 }
 
-function showMessage(text: string, type: MessageType = 'success'): void {
-  const messageEl = getElement<HTMLDivElement>('message');
+function showMessage(text: string, type: MessageType = 'success', elementId: string = 'message'): void {
+  const messageEl = getElement<HTMLDivElement>(elementId);
   messageEl.textContent = text;
   messageEl.className = `message ${type}`;
   messageEl.style.display = 'block';
@@ -244,7 +244,7 @@ async function fetchJournalEntries(): Promise<JournalEntry[]> {
     return data as JournalEntry[];
   } catch (error) {
     console.error('Error fetching journal entries:', error);
-    showJournalMessage('Error loading journal entries', 'error');
+    showMessage('Error loading journal entries', 'error', 'journal-message');
     return [];
   }
 }
@@ -272,7 +272,7 @@ async function submitJournalEntry(content: string): Promise<JournalEntryResponse
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Unknown error';
     console.error('Error submitting journal entry:', error);
-    showJournalMessage(message, 'error');
+    showMessage(message, 'error', 'journal-message');
     throw error;
   }
 }
@@ -302,17 +302,6 @@ async function updateJournalList(): Promise<void> {
   renderJournalEntries(entries);
 }
 
-function showJournalMessage(text: string, type: MessageType = 'success'): void {
-  const messageEl = getElement<HTMLDivElement>('journal-message');
-  messageEl.textContent = text;
-  messageEl.className = `message ${type}`;
-  messageEl.style.display = 'block';
-
-  setTimeout(() => {
-    messageEl.style.display = 'none';
-  }, 3000);
-}
-
 async function handleJournalSubmit(event: SubmitEvent): Promise<void> {
   event.preventDefault();
 
@@ -320,13 +309,13 @@ async function handleJournalSubmit(event: SubmitEvent): Promise<void> {
   const content = contentInput.value.trim();
 
   if (!content) {
-    showJournalMessage('Please enter some content', 'error');
+    showMessage('Please enter some content', 'error', 'journal-message');
     return;
   }
 
   try {
     await submitJournalEntry(content);
-    showJournalMessage('Journal entry added successfully!', 'success');
+    showMessage('Journal entry added successfully!', 'success', 'journal-message');
     contentInput.value = '';
     contentInput.focus();
     await updateJournalList();
