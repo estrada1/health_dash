@@ -1,0 +1,8 @@
+[project]
+name = "health-dash"
+version = "0.1.0"
+description = "Simple health tracking dashboard for logging weight entries"
+requires-python = ">=3.14"
+dependencies = [
+    "flask>=3.1.2",
+]
