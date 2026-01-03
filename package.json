@@ -1,0 +1,22 @@
+{
+  "name": "health-dash",
+  "version": "1.0.0",
+  "description": "Health tracking dashboard with TypeScript",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "type-check": "tsc --noEmit",
+    "clean": "rm -rf static/js/*.js static/js/*.js.map"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.27.0",
+  "devDependencies": {
+    "@types/node": "^25.0.3",
+    "chart.js": "^4.5.1",
+    "typescript": "^5.9.3"
+  }
+}

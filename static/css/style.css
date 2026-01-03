@@ -120,6 +120,176 @@ label {
     margin-top: 20px;
 }
 
+/* Journal Section */
+.journal-section {
+    margin-top: 50px;
+    padding-top: 30px;
+    border-top: 2px solid #ecf0f1;
+}
+
+.journal-form {
+    margin-bottom: 40px;
+}
+
+#journal-input {
+    padding: 12px;
+    font-size: 1rem;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, monospace;
+    border: 2px solid #ddd;
+    border-radius: 4px;
+    resize: vertical;
+    min-height: 120px;
+    transition: border-color 0.3s;
+    width: 100%;
+}
+
+#journal-input:focus {
+    outline: none;
+    border-color: #4bc0c0;
+}
+
+.markdown-hint {
+    margin-top: 5px;
+    color: #777;
+    font-style: italic;
+}
+
+/* Journal Entries Display */
+.journal-entries {
+    margin-top: 30px;
+}
+
+.journal-entries h3 {
+    color: #34495e;
+    margin-bottom: 20px;
+    font-size: 1.3rem;
+}
+
+#journal-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.journal-entry {
+    background-color: #f9f9f9;
+    border: 1px solid #e0e0e0;
+    border-left: 4px solid #4bc0c0;
+    border-radius: 4px;
+    padding: 20px;
+    transition: box-shadow 0.2s;
+}
+
+.journal-entry:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.entry-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.entry-date {
+    font-weight: 600;
+    color: #4bc0c0;
+    font-size: 0.95rem;
+}
+
+.entry-content {
+    color: #333;
+    line-height: 1.7;
+}
+
+/* Markdown content styling */
+.entry-content h1,
+.entry-content h2,
+.entry-content h3 {
+    margin-top: 15px;
+    margin-bottom: 10px;
+    color: #2c3e50;
+}
+
+.entry-content h1 { font-size: 1.5rem; }
+.entry-content h2 { font-size: 1.3rem; }
+.entry-content h3 { font-size: 1.1rem; }
+
+.entry-content p {
+    margin-bottom: 10px;
+}
+
+.entry-content ul,
+.entry-content ol {
+    margin-left: 25px;
+    margin-bottom: 10px;
+}
+
+.entry-content code {
+    background-color: #f4f4f4;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+}
+
+.entry-content pre {
+    background-color: #f4f4f4;
+    padding: 12px;
+    border-radius: 4px;
+    overflow-x: auto;
+    margin-bottom: 10px;
+}
+
+.entry-content pre code {
+    background-color: transparent;
+    padding: 0;
+}
+
+.entry-content blockquote {
+    border-left: 3px solid #4bc0c0;
+    padding-left: 15px;
+    margin: 15px 0;
+    color: #555;
+    font-style: italic;
+}
+
+.entry-content a {
+    color: #4bc0c0;
+    text-decoration: none;
+}
+
+.entry-content a:hover {
+    text-decoration: underline;
+}
+
+.entry-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 10px;
+}
+
+.entry-content th,
+.entry-content td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.entry-content th {
+    background-color: #f4f4f4;
+    font-weight: 600;
+}
+
+.no-entries {
+    text-align: center;
+    color: #999;
+    padding: 30px;
+    font-style: italic;
+}
+
 /* Responsive design for mobile */
 @media (max-width: 600px) {
     body {
@@ -145,5 +315,13 @@ label {
 
     #weight-chart {
         max-height: 300px;
+    }
+
+    .journal-entry {
+        padding: 15px;
+    }
+
+    #journal-input {
+        font-size: 0.95rem;
     }
 }

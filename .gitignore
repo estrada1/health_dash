@@ -8,3 +8,12 @@ wheels/
 
 # Virtual environments
 .venv
+
+# Node.js
+node_modules/
+
+# TypeScript compiled output
+static/js/app.js
+static/js/app.js.map
+static/js/*.js
+static/js/*.js.map
