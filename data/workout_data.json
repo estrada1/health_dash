@@ -1,0 +1,17 @@
+[
+  {
+    "timestamp": "2026-01-03T23:44:18.634543Z",
+    "workout_type": "Running",
+    "note": "Morning 5K run"
+  },
+  {
+    "timestamp": "2026-01-03T23:44:40.658312Z",
+    "workout_type": "Weights",
+    "note": "Leg day - squats and deadlifts"
+  },
+  {
+    "timestamp": "2026-01-03T23:44:50.113073Z",
+    "workout_type": "Yoga",
+    "note": ""
+  }
+]

@@ -9,6 +9,8 @@ import bleach
 app = Flask(__name__)
 DATA_FILE = 'data/weight_data.json'
 JOURNAL_DIR = 'data/journal'
+WORKOUT_FILE = 'data/workout_data.json'
+VALID_WORKOUT_TYPES = ['Running', 'Weights', 'Swim', 'Yoga']
 
 
 def ensure_data_directory():
@@ -31,6 +33,24 @@ def write_weight_data(data):
     """Write weight data to JSON file"""
     ensure_data_directory()
     with open(DATA_FILE, 'w') as f:
+        json.dump(data, f, indent=2)
+
+
+def read_workout_data():
+    """Read workout data from JSON file"""
+    if not os.path.exists(WORKOUT_FILE):
+        return []
+    try:
+        with open(WORKOUT_FILE, 'r') as f:
+            return json.load(f)
+    except json.JSONDecodeError:
+        return []
+
+
+def write_workout_data(data):
+    """Write workout data to JSON file"""
+    ensure_data_directory()
+    with open(WORKOUT_FILE, 'w') as f:
         json.dump(data, f, indent=2)
 
 
@@ -248,6 +268,55 @@ def get_journal_entry(filename):
         }
 
         return jsonify(entry)
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/workouts', methods=['GET'])
+def get_workouts():
+    """Return all workout entries"""
+    data = read_workout_data()
+    return jsonify(data)
+
+
+@app.route('/api/workouts', methods=['POST'])
+def add_workout():
+    """Add a new workout entry"""
+    try:
+        workout_type = request.json.get('workout_type')
+        note = request.json.get('note', '')
+
+        # Validate workout_type
+        if not workout_type:
+            return jsonify({'error': 'Workout type is required'}), 400
+
+        if workout_type not in VALID_WORKOUT_TYPES:
+            return jsonify({
+                'error': f'Invalid workout type. Must be one of: {", ".join(VALID_WORKOUT_TYPES)}'
+            }), 400
+
+        # Validate note
+        if note is not None and not isinstance(note, str):
+            return jsonify({'error': 'Note must be a string'}), 400
+
+        if note:
+            note = note.strip()
+            if len(note) > 500:
+                return jsonify({'error': 'Note too long (max 500 characters)'}), 400
+
+        # Create entry
+        entry = {
+            'timestamp': datetime.utcnow().isoformat() + 'Z',
+            'workout_type': workout_type,
+            'note': note
+        }
+
+        data = read_workout_data()
+        data.append(entry)
+        write_workout_data(data)
+
+        return jsonify(entry), 201
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500

@@ -345,3 +345,195 @@ label {
         font-size: 0.95rem;
     }
 }
+
+/* ============================================================================
+   Workout Section
+   ============================================================================ */
+
+.workout-section {
+    margin-top: 50px;
+    padding-top: 30px;
+    border-top: 2px solid #ecf0f1;
+}
+
+.workout-form {
+    margin-bottom: 40px;
+}
+
+#workout-type {
+    padding: 12px;
+    font-size: 1rem;
+    border: 2px solid #ddd;
+    border-radius: 4px;
+    transition: border-color 0.3s;
+    width: 100%;
+    background-color: white;
+    cursor: pointer;
+}
+
+#workout-type:focus {
+    outline: none;
+    border-color: #4bc0c0;
+}
+
+#workout-note {
+    padding: 12px;
+    font-size: 1rem;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    border: 2px solid #ddd;
+    border-radius: 4px;
+    resize: vertical;
+    min-height: 80px;
+    transition: border-color 0.3s;
+    width: 100%;
+}
+
+#workout-note:focus {
+    outline: none;
+    border-color: #4bc0c0;
+}
+
+/* Workout Timeline */
+.workout-timeline-container {
+    margin-top: 30px;
+}
+
+.workout-timeline-container h3 {
+    color: #34495e;
+    margin-bottom: 20px;
+    font-size: 1.3rem;
+}
+
+#workout-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.timeline-date-group {
+    border-left: 3px solid #4bc0c0;
+    padding-left: 20px;
+    position: relative;
+}
+
+.timeline-date {
+    color: #2c3e50;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+    position: relative;
+}
+
+.timeline-date::before {
+    content: '';
+    position: absolute;
+    left: -26px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 12px;
+    height: 12px;
+    background-color: #4bc0c0;
+    border-radius: 50%;
+    border: 3px solid white;
+    box-shadow: 0 0 0 1px #4bc0c0;
+}
+
+.workout-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.workout-item {
+    background-color: #f9f9f9;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 15px;
+    transition: box-shadow 0.2s;
+}
+
+.workout-item:hover {
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.workout-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.workout-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Color-coded workout type badges */
+.workout-badge-running {
+    background-color: #e3f2fd;
+    color: #1976d2;
+    border: 1px solid #bbdefb;
+}
+
+.workout-badge-weights {
+    background-color: #fce4ec;
+    color: #c2185b;
+    border: 1px solid #f8bbd0;
+}
+
+.workout-badge-swim {
+    background-color: #e0f2f1;
+    color: #00796b;
+    border: 1px solid #b2dfdb;
+}
+
+.workout-badge-yoga {
+    background-color: #f3e5f5;
+    color: #7b1fa2;
+    border: 1px solid #e1bee7;
+}
+
+.workout-time {
+    font-size: 0.9rem;
+    color: #777;
+    font-weight: 500;
+}
+
+.workout-note {
+    color: #555;
+    line-height: 1.5;
+    padding-top: 8px;
+    border-top: 1px solid #e0e0e0;
+    margin-top: 8px;
+    font-size: 0.95rem;
+}
+
+/* Responsive design for mobile */
+@media (max-width: 600px) {
+    .workout-section {
+        margin-top: 30px;
+    }
+
+    .workout-item {
+        padding: 12px;
+    }
+
+    .workout-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .workout-badge {
+        font-size: 0.8rem;
+    }
+
+    .timeline-date-group {
+        padding-left: 15px;
+    }
+}

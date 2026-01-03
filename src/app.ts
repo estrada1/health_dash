@@ -17,6 +17,18 @@ interface JournalEntryResponse extends JournalEntry {
   content: string;
 }
 
+type WorkoutType = "Running" | "Weights" | "Swim" | "Yoga";
+
+interface WorkoutEntry {
+  timestamp: string;
+  workout_type: WorkoutType;
+  note: string;
+}
+
+interface WorkoutsByDate {
+  [date: string]: WorkoutEntry[];
+}
+
 interface ErrorResponse {
   error: string;
 }
@@ -325,6 +337,174 @@ async function handleJournalSubmit(event: SubmitEvent): Promise<void> {
 }
 
 // ============================================================================
+// Workout Tracking
+// ============================================================================
+
+async function fetchWorkouts(): Promise<WorkoutEntry[]> {
+  try {
+    const response = await fetch('/api/workouts');
+    if (!response.ok) {
+      throw new Error('Failed to fetch workouts');
+    }
+    const data: unknown = await response.json();
+    return data as WorkoutEntry[];
+  } catch (error) {
+    console.error('Error fetching workouts:', error);
+    showMessage('Error loading workout data', 'error', 'workout-message');
+    return [];
+  }
+}
+
+async function submitWorkout(workoutType: WorkoutType, note: string): Promise<WorkoutEntry> {
+  try {
+    const response = await fetch('/api/workouts', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        workout_type: workoutType,
+        note: note.trim()
+      }),
+    });
+
+    if (!response.ok) {
+      const errorData: unknown = await response.json();
+      if (isErrorResponse(errorData)) {
+        throw new Error(errorData.error);
+      }
+      throw new Error('Failed to submit workout');
+    }
+
+    const data: unknown = await response.json();
+    return data as WorkoutEntry;
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Unknown error';
+    console.error('Error submitting workout:', error);
+    showMessage(message, 'error', 'workout-message');
+    throw error;
+  }
+}
+
+function groupWorkoutsByDate(workouts: WorkoutEntry[]): WorkoutsByDate {
+  const grouped: WorkoutsByDate = {};
+
+  workouts.forEach(workout => {
+    const date = new Date(workout.timestamp);
+    const dateKey = date.toISOString().split('T')[0];
+
+    if (!dateKey) return;
+
+    if (!grouped[dateKey]) {
+      grouped[dateKey] = [];
+    }
+    grouped[dateKey]!.push(workout);
+  });
+
+  return grouped;
+}
+
+function getWorkoutBadgeClass(workoutType: WorkoutType): string {
+  const classMap: Record<WorkoutType, string> = {
+    'Running': 'workout-badge-running',
+    'Weights': 'workout-badge-weights',
+    'Swim': 'workout-badge-swim',
+    'Yoga': 'workout-badge-yoga'
+  };
+  return classMap[workoutType];
+}
+
+function formatTime(timestamp: string): string {
+  const date = new Date(timestamp);
+  return date.toLocaleTimeString('en-US', {
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true
+  });
+}
+
+function escapeHtml(text: string): string {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+function renderWorkoutTimeline(workouts: WorkoutEntry[]): void {
+  const timelineEl = getElement<HTMLDivElement>('workout-timeline');
+
+  if (workouts.length === 0) {
+    timelineEl.innerHTML = '<p class="no-entries">No workouts logged yet. Add your first workout above!</p>';
+    return;
+  }
+
+  const grouped = groupWorkoutsByDate(workouts);
+  const sortedDates = Object.keys(grouped).sort().reverse();
+
+  const html = sortedDates.map(dateKey => {
+    const dateWorkouts = grouped[dateKey];
+    if (!dateWorkouts || dateWorkouts.length === 0) return '';
+
+    const formattedDate = formatDate(dateWorkouts[0]!.timestamp);
+
+    const workoutItems = dateWorkouts.map(workout => `
+      <div class="workout-item">
+        <div class="workout-header">
+          <span class="workout-badge ${getWorkoutBadgeClass(workout.workout_type)}">
+            ${workout.workout_type}
+          </span>
+          <span class="workout-time">${formatTime(workout.timestamp)}</span>
+        </div>
+        ${workout.note ? `<div class="workout-note">${escapeHtml(workout.note)}</div>` : ''}
+      </div>
+    `).join('');
+
+    return `
+      <div class="timeline-date-group">
+        <h4 class="timeline-date">${formattedDate}</h4>
+        <div class="workout-list">
+          ${workoutItems}
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  timelineEl.innerHTML = html;
+}
+
+async function updateWorkoutTimeline(): Promise<void> {
+  const workouts = await fetchWorkouts();
+  renderWorkoutTimeline(workouts);
+}
+
+async function handleWorkoutSubmit(event: SubmitEvent): Promise<void> {
+  event.preventDefault();
+
+  const typeSelect = getElement<HTMLSelectElement>('workout-type');
+  const noteInput = getElement<HTMLTextAreaElement>('workout-note');
+
+  const workoutType = typeSelect.value as WorkoutType;
+  const note = noteInput.value.trim();
+
+  if (!workoutType) {
+    showMessage('Please select a workout type', 'error', 'workout-message');
+    return;
+  }
+
+  try {
+    await submitWorkout(workoutType, note);
+    showMessage('Workout logged successfully!', 'success', 'workout-message');
+
+    typeSelect.value = '';
+    noteInput.value = '';
+    typeSelect.focus();
+
+    await updateWorkoutTimeline();
+  } catch (error) {
+    // Error already shown in submitWorkout function
+  }
+}
+
+// ============================================================================
 // Initialization
 // ============================================================================
 
@@ -334,6 +514,13 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (weightForm && weightChartEl) {
     await updateChart();
     weightForm.addEventListener('submit', handleFormSubmit);
+  }
+
+  const workoutForm = document.getElementById('workout-form') as HTMLFormElement | null;
+  const workoutTimeline = document.getElementById('workout-timeline');
+  if (workoutForm && workoutTimeline) {
+    await updateWorkoutTimeline();
+    workoutForm.addEventListener('submit', handleWorkoutSubmit);
   }
 
   const journalForm = document.getElementById('journal-form') as HTMLFormElement | null;
