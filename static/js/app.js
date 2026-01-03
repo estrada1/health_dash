@@ -53,9 +53,11 @@ function formatDate(timestamp) {
 function renderChart(data) {
     const ctx = document.getElementById('weight-chart').getContext('2d');
 
-    // Prepare data for chart
-    const labels = data.map(entry => formatDate(entry.timestamp));
-    const weights = data.map(entry => entry.weight);
+    // Prepare data for chart as x,y coordinates with actual timestamps
+    const chartData = data.map(entry => ({
+        x: new Date(entry.timestamp),
+        y: entry.weight
+    }));
 
     // Destroy existing chart if it exists
     if (weightChart) {
@@ -66,10 +68,9 @@ function renderChart(data) {
     weightChart = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: labels,
             datasets: [{
                 label: 'Weight (lbs)',
-                data: weights,
+                data: chartData,
                 borderColor: 'rgb(75, 192, 192)',
                 backgroundColor: 'rgba(75, 192, 192, 0.2)',
                 tension: 0.1,
@@ -88,6 +89,14 @@ function renderChart(data) {
                     }
                 },
                 x: {
+                    type: 'time',
+                    time: {
+                        unit: 'day',
+                        displayFormats: {
+                            day: 'MMM d'
+                        },
+                        tooltipFormat: 'MMM d, yyyy'
+                    },
                     title: {
                         display: true,
                         text: 'Date'
