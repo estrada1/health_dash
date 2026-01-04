@@ -410,6 +410,118 @@ label {
     gap: 25px;
 }
 
+.workout-calendar-container {
+    margin-top: 35px;
+}
+
+.workout-calendar-container h3 {
+    color: #34495e;
+    margin-bottom: 16px;
+    font-size: 1.3rem;
+}
+
+#workout-calendar {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+}
+
+.calendar-month {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 16px;
+    background-color: #fafafa;
+}
+
+.calendar-title {
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 12px;
+    text-align: center;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 6px;
+}
+
+.calendar-day,
+.calendar-header {
+    text-align: center;
+    font-size: 0.85rem;
+    padding: 6px 0;
+    border-radius: 6px;
+}
+
+.calendar-header {
+    font-weight: 600;
+    color: #6b7785;
+    background-color: #f1f3f5;
+}
+
+.calendar-day {
+    background-color: #ffffff;
+    border: 1px solid #eeeeee;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    gap: 4px;
+}
+
+.calendar-day.empty {
+    background-color: transparent;
+    border-color: transparent;
+}
+
+.calendar-day.has-workout {
+    background-color: #e6f4ea;
+    border-color: #cce9d7;
+    font-weight: 600;
+}
+
+.calendar-day-number {
+    font-size: 0.85rem;
+}
+
+.calendar-swatches {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.calendar-swatch {
+    width: 10px;
+    height: 10px;
+    border-radius: 999px;
+    display: inline-block;
+    border: 1px solid transparent;
+}
+
+.calendar-swatch.workout-badge-running {
+    background-color: #1976d2;
+    border-color: #1976d2;
+}
+
+.calendar-swatch.workout-badge-weights {
+    background-color: #c2185b;
+    border-color: #c2185b;
+}
+
+.calendar-swatch.workout-badge-swim {
+    background-color: #00796b;
+    border-color: #00796b;
+}
+
+.calendar-swatch.workout-badge-yoga {
+    background-color: #7b1fa2;
+    border-color: #7b1fa2;
+}
+
 .timeline-date-group {
     border-left: 3px solid #4bc0c0;
     padding-left: 20px;
@@ -535,5 +647,9 @@ label {
 
     .timeline-date-group {
         padding-left: 15px;
+    }
+
+    #workout-calendar {
+        grid-template-columns: 1fr;
     }
 }

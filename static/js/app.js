@@ -302,7 +302,7 @@ function groupWorkoutsByDate(workouts) {
     const grouped = {};
     workouts.forEach(workout => {
         const date = new Date(workout.timestamp);
-        const dateKey = date.toISOString().split('T')[0];
+        const dateKey = formatDateKey(date);
         if (!dateKey)
             return;
         if (!grouped[dateKey]) {
@@ -333,6 +333,9 @@ function escapeHtml(text) {
     const div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML;
+}
+function formatDateKey(date) {
+    return date.toISOString().split('T')[0] ?? '';
 }
 function renderWorkoutTimeline(workouts) {
     const timelineEl = getElement('workout-timeline');
@@ -369,9 +372,77 @@ function renderWorkoutTimeline(workouts) {
     }).join('');
     timelineEl.innerHTML = html;
 }
+function renderWorkoutCalendar(workouts) {
+    const calendarEl = getElement('workout-calendar');
+    const workoutDays = new Map();
+    workouts.forEach(workout => {
+        const dateKey = formatDateKey(new Date(workout.timestamp));
+        if (dateKey) {
+            if (!workoutDays.has(dateKey)) {
+                workoutDays.set(dateKey, new Set());
+            }
+            workoutDays.get(dateKey).add(workout.workout_type);
+        }
+    });
+    const now = new Date();
+    const currentYear = now.getFullYear();
+    const currentMonth = now.getMonth();
+    const previousMonthDate = new Date(currentYear, currentMonth - 1, 1);
+    const months = [
+        { year: previousMonthDate.getFullYear(), month: previousMonthDate.getMonth() },
+        { year: currentYear, month: currentMonth }
+    ];
+    const weekdayLabels = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const monthHtml = months.map(({ year, month }) => {
+        const monthStart = new Date(year, month, 1);
+        const monthEnd = new Date(year, month + 1, 0);
+        const daysInMonth = monthEnd.getDate();
+        const startDay = monthStart.getDay();
+        const title = monthStart.toLocaleDateString('en-US', {
+            month: 'long',
+            year: 'numeric'
+        });
+        const cells = [];
+        weekdayLabels.forEach(label => {
+            cells.push(`<div class="calendar-header">${label}</div>`);
+        });
+        for (let i = 0; i < startDay; i += 1) {
+            cells.push('<div class="calendar-day empty"></div>');
+        }
+        for (let day = 1; day <= daysInMonth; day += 1) {
+            const dateKey = formatDateKey(new Date(year, month, day));
+            const typesForDay = workoutDays.get(dateKey);
+            const hasWorkout = Boolean(typesForDay && typesForDay.size > 0);
+            const dayClass = hasWorkout ? 'calendar-day has-workout' : 'calendar-day';
+            const titleAttr = hasWorkout ? ' title="Workout logged"' : '';
+            const swatches = typesForDay
+                ? Array.from(typesForDay).map(type => {
+                    const badgeClass = getWorkoutBadgeClass(type);
+                    return `<span class="calendar-swatch ${badgeClass}"></span>`;
+                }).join('')
+                : '';
+            cells.push(`
+        <div class="${dayClass}"${titleAttr}>
+          <span class="calendar-day-number">${day}</span>
+          ${swatches ? `<span class="calendar-swatches">${swatches}</span>` : ''}
+        </div>
+      `);
+        }
+        return `
+      <div class="calendar-month">
+        <div class="calendar-title">${title}</div>
+        <div class="calendar-grid">
+          ${cells.join('')}
+        </div>
+      </div>
+    `;
+    }).join('');
+    calendarEl.innerHTML = monthHtml;
+}
 async function updateWorkoutTimeline() {
     const workouts = await fetchWorkouts();
     renderWorkoutTimeline(workouts);
+    renderWorkoutCalendar(workouts);
 }
 async function handleWorkoutSubmit(event) {
     event.preventDefault();
