@@ -213,6 +213,25 @@ label {
     border-bottom: 1px solid #e0e0e0;
 }
 
+.entry-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.entry-action {
+    border: 1px solid #d0d7de;
+    background-color: #ffffff;
+    color: #2c3e50;
+    border-radius: 4px;
+    padding: 4px 10px;
+    font-size: 0.85rem;
+    cursor: pointer;
+}
+
+.entry-action:hover {
+    background-color: #f4f6f8;
+}
+
 .entry-date {
     font-weight: 600;
     color: #4bc0c0;
@@ -222,6 +241,26 @@ label {
 .entry-content {
     color: #333;
     line-height: 1.7;
+}
+
+.entry-editor {
+    margin-top: 12px;
+}
+
+.entry-editor-input {
+    width: 100%;
+    min-height: 140px;
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, monospace;
+    resize: vertical;
+}
+
+.entry-editor-input:focus {
+    outline: none;
+    border-color: #4bc0c0;
 }
 
 /* Markdown content styling */

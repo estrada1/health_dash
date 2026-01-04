@@ -273,6 +273,48 @@ def get_journal_entry(filename):
         return jsonify({'error': str(e)}), 500
 
 
+@app.route('/api/journal/<filename>', methods=['PUT'])
+def update_journal_entry(filename):
+    """Update a specific journal entry"""
+    try:
+        if not re.match(r'^\d{4}-\d{2}-\d{2}-\d{6}-\d+\.md$', filename):
+            return jsonify({'error': 'Invalid filename'}), 400
+
+        filepath = os.path.join(JOURNAL_DIR, filename)
+        if not os.path.exists(filepath):
+            return jsonify({'error': 'Entry not found'}), 404
+
+        content = request.json.get('content')
+
+        if not content or not isinstance(content, str):
+            return jsonify({'error': 'Content is required'}), 400
+
+        content = content.strip()
+        if not content:
+            return jsonify({'error': 'Content cannot be empty'}), 400
+
+        if len(content) > 10000:
+            return jsonify({'error': 'Content too long (max 10,000 characters)'}), 400
+
+        with open(filepath, 'w', encoding='utf-8') as f:
+            f.write(content)
+
+        timestamp = parse_timestamp_from_filename(filename)
+        html = markdown_to_html(content)
+
+        entry = {
+            'filename': filename,
+            'timestamp': timestamp,
+            'content': content,
+            'html': html
+        }
+
+        return jsonify(entry)
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
 @app.route('/api/workouts', methods=['GET'])
 def get_workouts():
     """Return all workout entries"""
