@@ -11,6 +11,7 @@ DATA_DIR = os.environ.get('HEALTH_DASH_DATA_DIR', 'data')
 DATA_FILE = os.path.join(DATA_DIR, 'weight_data.json')
 JOURNAL_DIR = os.path.join(DATA_DIR, 'journal')
 WORKOUT_FILE = os.path.join(DATA_DIR, 'workout_data.json')
+MEAL_FILE = os.path.join(DATA_DIR, 'meal_data.json')
 VALID_WORKOUT_TYPES = ['Running', 'Weights', 'Swim', 'Yoga']
 
 
@@ -52,6 +53,24 @@ def write_workout_data(data):
     """Write workout data to JSON file"""
     ensure_data_directory()
     with open(WORKOUT_FILE, 'w') as f:
+        json.dump(data, f, indent=2)
+
+
+def read_meal_data():
+    """Read meal data from JSON file"""
+    if not os.path.exists(MEAL_FILE):
+        return []
+    try:
+        with open(MEAL_FILE, 'r') as f:
+            return json.load(f)
+    except json.JSONDecodeError:
+        return []
+
+
+def write_meal_data(data):
+    """Write meal data to JSON file"""
+    ensure_data_directory()
+    with open(MEAL_FILE, 'w') as f:
         json.dump(data, f, indent=2)
 
 
@@ -144,6 +163,12 @@ def index():
 def journal():
     """Serve the journal HTML page"""
     return render_template('journal.html')
+
+
+@app.route('/diet')
+def diet():
+    """Serve the diet HTML page"""
+    return render_template('diet.html')
 
 
 @app.route('/api/weights', methods=['GET'])
@@ -358,6 +383,63 @@ def add_workout():
         data = read_workout_data()
         data.append(entry)
         write_workout_data(data)
+
+        return jsonify(entry), 201
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/meals', methods=['GET'])
+def get_meals():
+    """Return all meal entries"""
+    data = read_meal_data()
+    return jsonify(data)
+
+
+@app.route('/api/meals', methods=['POST'])
+def add_meal():
+    """Add a new meal entry"""
+    try:
+        title = request.json.get('title')
+        calories = request.json.get('calories')
+        notes = request.json.get('notes', '')
+
+        if not title or not isinstance(title, str):
+            return jsonify({'error': 'Title is required'}), 400
+
+        title = title.strip()
+        if not title:
+            return jsonify({'error': 'Title cannot be empty'}), 400
+
+        if calories is not None and calories != '':
+            try:
+                calories = int(calories)
+            except (ValueError, TypeError):
+                return jsonify({'error': 'Calories must be a number'}), 400
+            if calories < 0:
+                return jsonify({'error': 'Calories must be zero or positive'}), 400
+        else:
+            calories = None
+
+        if notes is not None and not isinstance(notes, str):
+            return jsonify({'error': 'Notes must be a string'}), 400
+
+        if notes:
+            notes = notes.strip()
+            if len(notes) > 2000:
+                return jsonify({'error': 'Notes too long (max 2,000 characters)'}), 400
+
+        entry = {
+            'timestamp': datetime.utcnow().isoformat() + 'Z',
+            'title': title,
+            'calories': calories,
+            'notes': notes
+        }
+
+        data = read_meal_data()
+        data.append(entry)
+        write_meal_data(data)
 
         return jsonify(entry), 201
 

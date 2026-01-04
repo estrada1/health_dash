@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diet</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <nav class="page-nav">
+            <a href="/">Tracker</a>
+            <a href="/journal">Journal</a>
+            <a href="/diet" class="active">Diet</a>
+        </nav>
+        <h1>Diet</h1>
+
+        <div class="meal-section">
+            <div class="meal-form">
+                <form id="meal-form">
+                    <div class="form-group">
+                        <label for="meal-title">Meal Title:</label>
+                        <input
+                            type="text"
+                            id="meal-title"
+                            name="title"
+                            placeholder="e.g., Breakfast, Chicken Salad, Smoothie"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="meal-calories">Kilocalories (optional):</label>
+                        <input
+                            type="number"
+                            id="meal-calories"
+                            name="calories"
+                            min="0"
+                            step="1"
+                            placeholder="e.g., 550"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="meal-notes">Notes (optional):</label>
+                        <textarea
+                            id="meal-notes"
+                            name="notes"
+                            rows="4"
+                            maxlength="2000"
+                            placeholder="Add ingredients, macro notes, or how you felt."
+                        ></textarea>
+                    </div>
+
+                    <button type="submit" class="submit-btn">Log Meal</button>
+                </form>
+                <div id="meal-message" class="message"></div>
+            </div>
+
+            <div class="meal-entries">
+                <h3>Meal History</h3>
+                <div id="meal-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

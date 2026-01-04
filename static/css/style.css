@@ -349,6 +349,98 @@ label {
     font-style: italic;
 }
 
+/* Meal Section */
+.meal-section {
+    margin-top: 30px;
+}
+
+.meal-form {
+    margin-bottom: 35px;
+}
+
+#meal-title,
+#meal-calories {
+    padding: 12px;
+    font-size: 1rem;
+    border: 2px solid #ddd;
+    border-radius: 4px;
+    transition: border-color 0.3s;
+}
+
+#meal-title:focus,
+#meal-calories:focus {
+    outline: none;
+    border-color: #4bc0c0;
+}
+
+#meal-notes {
+    padding: 12px;
+    font-size: 1rem;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    border: 2px solid #ddd;
+    border-radius: 4px;
+    resize: vertical;
+    min-height: 100px;
+    transition: border-color 0.3s;
+    width: 100%;
+}
+
+#meal-notes:focus {
+    outline: none;
+    border-color: #4bc0c0;
+}
+
+.meal-entries h3 {
+    color: #34495e;
+    margin-bottom: 20px;
+    font-size: 1.3rem;
+}
+
+#meal-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.meal-entry {
+    background-color: #f9f9f9;
+    border: 1px solid #e0e0e0;
+    border-left: 4px solid #4bc0c0;
+    border-radius: 6px;
+    padding: 18px;
+}
+
+.meal-header {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.meal-title {
+    font-weight: 600;
+    color: #2c3e50;
+    font-size: 1.05rem;
+}
+
+.meal-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    color: #667085;
+    font-size: 0.9rem;
+}
+
+.meal-kcal {
+    font-weight: 600;
+    color: #4bc0c0;
+}
+
+.meal-notes {
+    margin-top: 12px;
+    color: #444;
+    line-height: 1.6;
+}
+
 /* Responsive design for mobile */
 @media (max-width: 600px) {
     body {
