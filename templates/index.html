@@ -10,6 +10,10 @@
 </head>
 <body>
     <div class="container">
+        <nav class="page-nav">
+            <a href="/" class="active">Weight Tracker</a>
+            <a href="/journal">Health Journal</a>
+        </nav>
         <h1>Weight Tracker</h1>
 
         <div class="form-section">
@@ -35,35 +39,6 @@
         <div class="chart-section">
             <h2>Weight History</h2>
             <canvas id="weight-chart"></canvas>
-        </div>
-
-        <div class="journal-section">
-            <h2>Health Journal</h2>
-
-            <div class="journal-form">
-                <form id="journal-form">
-                    <div class="form-group">
-                        <label for="journal-input">New Entry (Markdown supported):</label>
-                        <textarea
-                            id="journal-input"
-                            name="content"
-                            rows="6"
-                            placeholder="Write your health journal entry... (supports **bold**, *italic*, # headings, - lists, etc.)"
-                            required
-                        ></textarea>
-                        <div class="markdown-hint">
-                            <small>Markdown: **bold**, *italic*, # headings, - lists, [links](url), etc.</small>
-                        </div>
-                    </div>
-                    <button type="submit" class="submit-btn">Add Journal Entry</button>
-                </form>
-                <div id="journal-message" class="message"></div>
-            </div>
-
-            <div class="journal-entries">
-                <h3>Recent Entries</h3>
-                <div id="journal-list"></div>
-            </div>
         </div>
     </div>
 

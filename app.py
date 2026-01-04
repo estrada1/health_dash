@@ -119,6 +119,12 @@ def index():
     return render_template('index.html')
 
 
+@app.route('/journal')
+def journal():
+    """Serve the journal HTML page"""
+    return render_template('journal.html')
+
+
 @app.route('/api/weights', methods=['GET'])
 def get_weights():
     """Return all weight entries"""

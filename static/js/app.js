@@ -255,16 +255,18 @@ async function handleJournalSubmit(event) {
 // Initialization
 // ============================================================================
 document.addEventListener('DOMContentLoaded', async () => {
-    // Load and render initial chart
-    await updateChart();
-    // Set up weight form submission handler
-    const weightForm = getElement('weight-form');
-    weightForm.addEventListener('submit', handleFormSubmit);
-    // Load and render journal entries
-    await updateJournalList();
-    // Set up journal form submission handler
-    const journalForm = getElement('journal-form');
-    journalForm.addEventListener('submit', handleJournalSubmit);
+    const weightForm = document.getElementById('weight-form');
+    const weightChartEl = document.getElementById('weight-chart');
+    if (weightForm && weightChartEl) {
+        await updateChart();
+        weightForm.addEventListener('submit', handleFormSubmit);
+    }
+    const journalForm = document.getElementById('journal-form');
+    const journalList = document.getElementById('journal-list');
+    if (journalForm && journalList) {
+        await updateJournalList();
+        journalForm.addEventListener('submit', handleJournalSubmit);
+    }
 });
 export {};
 //# sourceMappingURL=app.js.map

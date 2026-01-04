@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Journal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <nav class="page-nav">
+            <a href="/">Weight Tracker</a>
+            <a href="/journal" class="active">Health Journal</a>
+        </nav>
+        <h1>Health Journal</h1>
+
+        <div class="journal-section">
+            <div class="journal-form">
+                <form id="journal-form">
+                    <div class="form-group">
+                        <label for="journal-input">New Entry (Markdown supported):</label>
+                        <textarea
+                            id="journal-input"
+                            name="content"
+                            rows="6"
+                            placeholder="Write your health journal entry... (supports **bold**, *italic*, # headings, - lists, etc.)"
+                            required
+                        ></textarea>
+                        <div class="markdown-hint">
+                            <small>Markdown: **bold**, *italic*, # headings, - lists, [links](url), etc.</small>
+                        </div>
+                    </div>
+                    <button type="submit" class="submit-btn">Add Journal Entry</button>
+                </form>
+                <div id="journal-message" class="message"></div>
+            </div>
+
+            <div class="journal-entries">
+                <h3>Recent Entries</h3>
+                <div id="journal-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

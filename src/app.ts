@@ -329,17 +329,17 @@ async function handleJournalSubmit(event: SubmitEvent): Promise<void> {
 // ============================================================================
 
 document.addEventListener('DOMContentLoaded', async () => {
-  // Load and render initial chart
-  await updateChart();
+  const weightForm = document.getElementById('weight-form') as HTMLFormElement | null;
+  const weightChartEl = document.getElementById('weight-chart');
+  if (weightForm && weightChartEl) {
+    await updateChart();
+    weightForm.addEventListener('submit', handleFormSubmit);
+  }
 
-  // Set up weight form submission handler
-  const weightForm = getElement<HTMLFormElement>('weight-form');
-  weightForm.addEventListener('submit', handleFormSubmit);
-
-  // Load and render journal entries
-  await updateJournalList();
-
-  // Set up journal form submission handler
-  const journalForm = getElement<HTMLFormElement>('journal-form');
-  journalForm.addEventListener('submit', handleJournalSubmit);
+  const journalForm = document.getElementById('journal-form') as HTMLFormElement | null;
+  const journalList = document.getElementById('journal-list');
+  if (journalForm && journalList) {
+    await updateJournalList();
+    journalForm.addEventListener('submit', handleJournalSubmit);
+  }
 });
