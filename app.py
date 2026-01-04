@@ -7,15 +7,16 @@ import markdown
 import bleach
 
 app = Flask(__name__)
-DATA_FILE = 'data/weight_data.json'
-JOURNAL_DIR = 'data/journal'
-WORKOUT_FILE = 'data/workout_data.json'
+DATA_DIR = os.environ.get('HEALTH_DASH_DATA_DIR', 'data')
+DATA_FILE = os.path.join(DATA_DIR, 'weight_data.json')
+JOURNAL_DIR = os.path.join(DATA_DIR, 'journal')
+WORKOUT_FILE = os.path.join(DATA_DIR, 'workout_data.json')
 VALID_WORKOUT_TYPES = ['Running', 'Weights', 'Swim', 'Yoga']
 
 
 def ensure_data_directory():
     """Create data directory if it doesn't exist"""
-    os.makedirs('data', exist_ok=True)
+    os.makedirs(DATA_DIR, exist_ok=True)
 
 
 def read_weight_data():
