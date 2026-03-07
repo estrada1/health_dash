@@ -1,17 +1,97 @@
 [
   {
-    "timestamp": "2026-01-03T23:44:18.634543Z",
+    "timestamp": "2026-01-10T18:00:00Z",
     "workout_type": "Running",
-    "note": "Morning 5K run"
+    "note": "Easy 5K with negative split"
   },
   {
-    "timestamp": "2026-01-03T23:44:40.658312Z",
+    "timestamp": "2026-01-12T18:00:00Z",
     "workout_type": "Weights",
-    "note": "Leg day - squats and deadlifts"
+    "note": "Lower body strength: squats and RDLs"
   },
   {
-    "timestamp": "2026-01-03T23:44:50.113073Z",
+    "timestamp": "2026-01-14T18:00:00Z",
     "workout_type": "Yoga",
-    "note": ""
+    "note": "Morning vinyasa to loosen shoulders"
+  },
+  {
+    "timestamp": "2026-01-16T18:00:00Z",
+    "workout_type": "Swim",
+    "note": "1,200m steady endurance set"
+  },
+  {
+    "timestamp": "2026-01-24T18:00:00Z",
+    "workout_type": "Swim",
+    "note": "Drill day: kick and pull focus"
+  },
+  {
+    "timestamp": "2026-01-26T18:00:00Z",
+    "workout_type": "Running",
+    "note": "Tempo run, felt strong on final mile"
+  },
+  {
+    "timestamp": "2026-01-28T18:00:00Z",
+    "workout_type": "Weights",
+    "note": "Upper body push day, added 5 lbs to bench"
+  },
+  {
+    "timestamp": "2026-01-30T18:00:00Z",
+    "workout_type": "Yoga",
+    "note": "Recovery session, hips and hamstrings"
+  },
+  {
+    "timestamp": "2026-02-07T18:00:00Z",
+    "workout_type": "Yoga",
+    "note": "Morning vinyasa to loosen shoulders"
+  },
+  {
+    "timestamp": "2026-02-09T18:00:00Z",
+    "workout_type": "Swim",
+    "note": "1,200m steady endurance set"
+  },
+  {
+    "timestamp": "2026-02-11T18:00:00Z",
+    "workout_type": "Running",
+    "note": "Intervals: 6 x 400m, solid pacing"
+  },
+  {
+    "timestamp": "2026-02-13T18:00:00Z",
+    "workout_type": "Weights",
+    "note": "Full-body circuit, focused on form"
+  },
+  {
+    "timestamp": "2026-02-21T18:00:00Z",
+    "workout_type": "Weights",
+    "note": "Upper body push day, added 5 lbs to bench"
+  },
+  {
+    "timestamp": "2026-02-23T18:00:00Z",
+    "workout_type": "Yoga",
+    "note": "Recovery session, hips and hamstrings"
+  },
+  {
+    "timestamp": "2026-02-25T18:00:00Z",
+    "workout_type": "Swim",
+    "note": "Technique session with easy cooldown"
+  },
+  {
+    "timestamp": "2026-02-27T18:00:00Z",
+    "workout_type": "Running",
+    "note": "Easy 5K with negative split"
+  },
+  {
+    "timestamp": "2026-03-02T18:15:00Z",
+    "workout_type": "Weights",
+    "note": "Lower body strength plus core finisher"
+  },
+  {
+    "timestamp": "2026-03-04T07:10:00Z",
+    "workout_type": "Yoga",
+    "note": "Morning mobility flow before work"
+  },
+  {
+    "timestamp": "2026-03-06T17:45:00Z",
+    "workout_type": "Running",
+    "note": "Easy 4-mile run, controlled effort"
   }
 ]

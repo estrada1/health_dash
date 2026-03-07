@@ -1,18 +1,122 @@
 [
   {
-    "timestamp": "2025-12-11T16:14:04.586767Z",
-    "weight": 152.4
+    "timestamp": "2026-01-06T07:30:00Z",
+    "weight": 163.1
   },
   {
-    "timestamp": "2025-12-12T16:14:04.586767Z",
-    "weight": 150.6
+    "timestamp": "2026-01-08T07:30:00Z",
+    "weight": 162.3
   },
   {
-    "timestamp": "2026-01-02T16:15:17.169405Z",
-    "weight": 157.8
+    "timestamp": "2026-01-10T07:30:00Z",
+    "weight": 162.4
   },
   {
-    "timestamp": "2026-01-03T17:24:18.428481Z",
-    "weight": 156.0
+    "timestamp": "2026-01-12T07:30:00Z",
+    "weight": 161.9
+  },
+  {
+    "timestamp": "2026-01-14T07:30:00Z",
+    "weight": 161.8
+  },
+  {
+    "timestamp": "2026-01-16T07:30:00Z",
+    "weight": 161.8
+  },
+  {
+    "timestamp": "2026-01-18T07:30:00Z",
+    "weight": 161.0
+  },
+  {
+    "timestamp": "2026-01-20T07:30:00Z",
+    "weight": 161.1
+  },
+  {
+    "timestamp": "2026-01-22T07:30:00Z",
+    "weight": 160.6
+  },
+  {
+    "timestamp": "2026-01-24T07:30:00Z",
+    "weight": 160.5
+  },
+  {
+    "timestamp": "2026-01-26T07:30:00Z",
+    "weight": 160.5
+  },
+  {
+    "timestamp": "2026-01-28T07:30:00Z",
+    "weight": 159.7
+  },
+  {
+    "timestamp": "2026-01-30T07:30:00Z",
+    "weight": 159.8
+  },
+  {
+    "timestamp": "2026-02-01T07:30:00Z",
+    "weight": 159.3
+  },
+  {
+    "timestamp": "2026-02-03T07:30:00Z",
+    "weight": 159.2
+  },
+  {
+    "timestamp": "2026-02-05T07:30:00Z",
+    "weight": 159.2
+  },
+  {
+    "timestamp": "2026-02-07T07:30:00Z",
+    "weight": 158.4
+  },
+  {
+    "timestamp": "2026-02-09T07:30:00Z",
+    "weight": 158.5
+  },
+  {
+    "timestamp": "2026-02-11T07:30:00Z",
+    "weight": 158.0
+  },
+  {
+    "timestamp": "2026-02-13T07:30:00Z",
+    "weight": 157.9
+  },
+  {
+    "timestamp": "2026-02-15T07:30:00Z",
+    "weight": 157.9
+  },
+  {
+    "timestamp": "2026-02-17T07:30:00Z",
+    "weight": 157.1
+  },
+  {
+    "timestamp": "2026-02-19T07:30:00Z",
+    "weight": 157.2
+  },
+  {
+    "timestamp": "2026-02-21T07:30:00Z",
+    "weight": 156.7
+  },
+  {
+    "timestamp": "2026-02-23T07:30:00Z",
+    "weight": 156.6
+  },
+  {
+    "timestamp": "2026-02-25T07:30:00Z",
+    "weight": 156.6
+  },
+  {
+    "timestamp": "2026-02-27T07:30:00Z",
+    "weight": 155.8
+  },
+  {
+    "timestamp": "2026-03-01T07:30:00Z",
+    "weight": 155.9
+  },
+  {
+    "timestamp": "2026-03-03T07:30:00Z",
+    "weight": 155.4
+  },
+  {
+    "timestamp": "2026-03-05T07:30:00Z",
+    "weight": 155.3
   }
 ]
