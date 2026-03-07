@@ -20,6 +20,29 @@ interface WorkoutsByDate {
   [date: string]: WorkoutEntry[];
 }
 
+function updateWorkoutSummary(workouts: WorkoutEntry[]): void {
+  const workoutsWeekEl = document.getElementById('metric-workouts-week');
+  if (!workoutsWeekEl) {
+    return;
+  }
+
+  if (workouts.length === 0) {
+    workoutsWeekEl.textContent = '0';
+    return;
+  }
+
+  const now = new Date();
+  const sevenDaysAgo = new Date(now);
+  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+
+  const count = workouts.filter(workout => {
+    const timestamp = new Date(workout.timestamp);
+    return timestamp >= sevenDaysAgo && timestamp <= now;
+  }).length;
+
+  workoutsWeekEl.textContent = String(count);
+}
+
 async function fetchWorkouts(): Promise<WorkoutEntry[]> {
   try {
     const response = await fetch('/api/workouts');
@@ -220,6 +243,7 @@ async function updateWorkoutTimeline(): Promise<void> {
   const workouts = await fetchWorkouts();
   renderWorkoutTimeline(workouts);
   renderWorkoutCalendar(workouts);
+  updateWorkoutSummary(workouts);
 }
 
 async function handleWorkoutSubmit(event: SubmitEvent): Promise<void> {

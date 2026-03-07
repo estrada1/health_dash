@@ -20,6 +20,47 @@ declare global {
 const Chart = window.Chart;
 let weightChart: ChartType<'line', ChartDataPoint[]> | null = null;
 
+function sortByTimestamp(entries: WeightEntry[]): WeightEntry[] {
+  return [...entries].sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
+}
+
+function updateWeightSummary(entries: WeightEntry[]): void {
+  const latestEl = document.getElementById('metric-latest-weight');
+  const deltaEl = document.getElementById('metric-weight-delta');
+
+  if (!latestEl || !deltaEl) {
+    return;
+  }
+
+  if (entries.length === 0) {
+    latestEl.textContent = '--';
+    deltaEl.textContent = '--';
+    return;
+  }
+
+  const sorted = sortByTimestamp(entries);
+  const latest = sorted[sorted.length - 1];
+  if (!latest) {
+    return;
+  }
+
+  latestEl.textContent = `${latest.weight.toFixed(1)} lbs`;
+
+  const latestDate = new Date(latest.timestamp);
+  const sevenDaysAgo = new Date(latestDate);
+  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+
+  const baseline = sorted.find(entry => new Date(entry.timestamp) >= sevenDaysAgo) ?? sorted[0];
+  if (!baseline) {
+    deltaEl.textContent = '--';
+    return;
+  }
+
+  const delta = latest.weight - baseline.weight;
+  const sign = delta > 0 ? '+' : '';
+  deltaEl.textContent = `${sign}${delta.toFixed(1)} lbs`;
+}
+
 async function fetchWeights(): Promise<WeightEntry[]> {
   try {
     const response = await fetch('/api/weights');
@@ -130,9 +171,11 @@ function renderChart(data: WeightEntry[]): void {
   weightChart = new Chart(ctx, config);
 }
 
-async function updateChart(): Promise<void> {
+async function updateChart(): Promise<WeightEntry[]> {
   const data = await fetchWeights();
   renderChart(data);
+  updateWeightSummary(data);
+  return data;
 }
 
 async function handleFormSubmit(event: SubmitEvent): Promise<void> {

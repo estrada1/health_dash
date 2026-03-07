@@ -15,8 +15,29 @@
         </nav>
         <h1>Journal</h1>
 
-        <div class="journal-section">
-            <div class="journal-form">
+        <section class="section-card">
+            <div class="card-header">
+                <h2>Summary</h2>
+                <p class="card-copy">A quick look at your recent journaling activity.</p>
+            </div>
+            <div class="metrics-grid">
+                <div class="metric-tile">
+                    <span class="metric-label">Total Entries</span>
+                    <span class="metric-value" id="metric-journal-total">--</span>
+                </div>
+                <div class="metric-tile">
+                    <span class="metric-label">Latest Entry</span>
+                    <span class="metric-value" id="metric-journal-latest">--</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-card">
+            <div class="card-header">
+                <h2>Add Entry</h2>
+                <p class="card-copy">Write in markdown and keep your latest health notes in one stream.</p>
+            </div>
+            <div class="subsection-block">
                 <form id="journal-form">
                     <div class="form-group">
                         <label for="journal-input">New Entry (Markdown supported):</label>
@@ -35,12 +56,18 @@
                 </form>
                 <div id="journal-message" class="message"></div>
             </div>
+        </section>
 
-            <div class="journal-entries">
+        <section class="section-card">
+            <div class="card-header">
+                <h2>History</h2>
+                <p class="card-copy">Browse and edit your recent entries.</p>
+            </div>
+            <div class="subsection-block journal-entries">
                 <h3>Recent Entries</h3>
                 <div id="journal-list"></div>
             </div>
-        </div>
+        </section>
     </div>
 
     <script type="module" src="{{ url_for('static', filename='js/app.js') }}"></script>

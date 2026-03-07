@@ -10,6 +10,28 @@ interface JournalEntryResponse extends JournalEntry {
   content: string;
 }
 
+function updateJournalSummary(entries: JournalEntry[]): void {
+  const totalEl = document.getElementById('metric-journal-total');
+  const latestEl = document.getElementById('metric-journal-latest');
+
+  if (!totalEl || !latestEl) {
+    return;
+  }
+
+  totalEl.textContent = String(entries.length);
+
+  if (entries.length === 0) {
+    latestEl.textContent = '--';
+    return;
+  }
+
+  const latestEntry = [...entries].sort(
+    (a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+  )[0];
+
+  latestEl.textContent = latestEntry ? formatDate(latestEntry.timestamp) : '--';
+}
+
 async function fetchJournalEntries(): Promise<JournalEntry[]> {
   try {
     const response = await fetch('/api/journal');
@@ -128,6 +150,7 @@ function renderJournalEntries(entries: JournalEntry[]): void {
 async function updateJournalList(): Promise<void> {
   const entries = await fetchJournalEntries();
   renderJournalEntries(entries);
+  updateJournalSummary(entries);
 }
 
 async function handleJournalSubmit(event: SubmitEvent): Promise<void> {

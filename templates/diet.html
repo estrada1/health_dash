@@ -15,8 +15,33 @@
         </nav>
         <h1>Diet</h1>
 
-        <div class="meal-section">
-            <div class="meal-form">
+        <section class="section-card">
+            <div class="card-header">
+                <h2>Summary</h2>
+                <p class="card-copy">A snapshot of current meal logging and calorie totals.</p>
+            </div>
+            <div class="metrics-grid">
+                <div class="metric-tile">
+                    <span class="metric-label">Meals Today</span>
+                    <span class="metric-value" id="metric-meals-today">--</span>
+                </div>
+                <div class="metric-tile">
+                    <span class="metric-label">Calories Today</span>
+                    <span class="metric-value" id="metric-calories-today">--</span>
+                </div>
+                <div class="metric-tile">
+                    <span class="metric-label">7-Day Avg Calories</span>
+                    <span class="metric-value" id="metric-calories-week">--</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-card">
+            <div class="card-header">
+                <h2>Add Meal</h2>
+                <p class="card-copy">Log a meal with optional calories and notes.</p>
+            </div>
+            <div class="subsection-block meal-form">
                 <form id="meal-form">
                     <div class="form-group">
                         <label for="meal-title">Meal Title:</label>
@@ -56,12 +81,18 @@
                 </form>
                 <div id="meal-message" class="message"></div>
             </div>
+        </section>
 
-            <div class="meal-entries">
+        <section class="section-card">
+            <div class="card-header">
+                <h2>History</h2>
+                <p class="card-copy">Recent meals and details.</p>
+            </div>
+            <div class="subsection-block meal-entries">
                 <h3>Meal History</h3>
                 <div id="meal-list"></div>
             </div>
-        </div>
+        </section>
     </div>
 
     <script type="module" src="{{ url_for('static', filename='js/app.js') }}"></script>
