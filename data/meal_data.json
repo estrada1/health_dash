@@ -250,5 +250,17 @@
     "title": "Dinner",
     "calories": 665,
     "notes": "Salmon, sweet potato, side salad."
+  },
+  {
+    "timestamp": "2026-03-09T19:56:43.235527Z",
+    "title": "Smoke Meal 1773086203181",
+    "calories": 550,
+    "notes": "Playwright smoke meal"
+  },
+  {
+    "timestamp": "2026-03-09T19:57:05.001769Z",
+    "title": "Smoke Meal 1773086224950",
+    "calories": 550,
+    "notes": "Playwright smoke meal"
   }
 ]

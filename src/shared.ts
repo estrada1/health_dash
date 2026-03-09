@@ -1,3 +1,5 @@
+import { formatDateKeyUtc } from './lib/time.js';
+
 export interface ErrorResponse {
   error: string;
 }
@@ -40,7 +42,7 @@ export function formatTime(timestamp: string): string {
 }
 
 export function formatDateKey(date: Date): string {
-  return date.toISOString().split('T')[0] ?? '';
+  return formatDateKeyUtc(date);
 }
 
 export function showMessage(

@@ -1,10 +1,8 @@
 import type { Chart as ChartType, ChartConfiguration } from 'chart.js';
-import { getElement, isErrorResponse, showMessage } from './shared.js';
-
-interface WeightEntry {
-  weight: number;
-  timestamp: string;
-}
+import { apiRequest } from './api/client.js';
+import type { WeightEntry } from './api/types.js';
+import { calculateWeightSummary } from './lib/summary.js';
+import { getElement, showMessage } from './shared.js';
 
 interface ChartDataPoint {
   x: Date;
@@ -20,10 +18,6 @@ declare global {
 const Chart = window.Chart;
 let weightChart: ChartType<'line', ChartDataPoint[]> | null = null;
 
-function sortByTimestamp(entries: WeightEntry[]): WeightEntry[] {
-  return [...entries].sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
-}
-
 function updateWeightSummary(entries: WeightEntry[]): void {
   const latestEl = document.getElementById('metric-latest-weight');
   const deltaEl = document.getElementById('metric-weight-delta');
@@ -32,43 +26,14 @@ function updateWeightSummary(entries: WeightEntry[]): void {
     return;
   }
 
-  if (entries.length === 0) {
-    latestEl.textContent = '--';
-    deltaEl.textContent = '--';
-    return;
-  }
-
-  const sorted = sortByTimestamp(entries);
-  const latest = sorted[sorted.length - 1];
-  if (!latest) {
-    return;
-  }
-
-  latestEl.textContent = `${latest.weight.toFixed(1)} lbs`;
-
-  const latestDate = new Date(latest.timestamp);
-  const sevenDaysAgo = new Date(latestDate);
-  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-
-  const baseline = sorted.find(entry => new Date(entry.timestamp) >= sevenDaysAgo) ?? sorted[0];
-  if (!baseline) {
-    deltaEl.textContent = '--';
-    return;
-  }
-
-  const delta = latest.weight - baseline.weight;
-  const sign = delta > 0 ? '+' : '';
-  deltaEl.textContent = `${sign}${delta.toFixed(1)} lbs`;
+  const summary = calculateWeightSummary(entries);
+  latestEl.textContent = summary.latest;
+  deltaEl.textContent = summary.delta7d;
 }
 
 async function fetchWeights(): Promise<WeightEntry[]> {
   try {
-    const response = await fetch('/api/weights');
-    if (!response.ok) {
-      throw new Error('Failed to fetch weights');
-    }
-    const data: unknown = await response.json();
-    return data as WeightEntry[];
+    return await apiRequest<WeightEntry[]>('/api/weights');
   } catch (error) {
     console.error('Error fetching weights:', error);
     showMessage('Error loading weight data', 'error');
@@ -78,24 +43,13 @@ async function fetchWeights(): Promise<WeightEntry[]> {
 
 async function submitWeight(weight: number): Promise<WeightEntry> {
   try {
-    const response = await fetch('/api/weights', {
+    return await apiRequest<WeightEntry>('/api/weights', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ weight }),
     });
-
-    if (!response.ok) {
-      const errorData: unknown = await response.json();
-      if (isErrorResponse(errorData)) {
-        throw new Error(errorData.error);
-      }
-      throw new Error('Failed to submit weight');
-    }
-
-    const data: unknown = await response.json();
-    return data as WeightEntry;
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Unknown error';
     console.error('Error submitting weight:', error);

@@ -1,14 +1,7 @@
-import { formatDate, getElement, isErrorResponse, showMessage } from './shared.js';
-
-interface JournalEntry {
-  filename: string;
-  timestamp: string;
-  html: string;
-}
-
-interface JournalEntryResponse extends JournalEntry {
-  content: string;
-}
+import { apiRequest } from './api/client.js';
+import type { JournalEntry, JournalEntryWithContent } from './api/types.js';
+import { calculateJournalSummary } from './lib/summary.js';
+import { formatDate, getElement, showMessage } from './shared.js';
 
 function updateJournalSummary(entries: JournalEntry[]): void {
   const totalEl = document.getElementById('metric-journal-total');
@@ -18,28 +11,14 @@ function updateJournalSummary(entries: JournalEntry[]): void {
     return;
   }
 
-  totalEl.textContent = String(entries.length);
-
-  if (entries.length === 0) {
-    latestEl.textContent = '--';
-    return;
-  }
-
-  const latestEntry = [...entries].sort(
-    (a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
-  )[0];
-
-  latestEl.textContent = latestEntry ? formatDate(latestEntry.timestamp) : '--';
+  const summary = calculateJournalSummary(entries, formatDate);
+  totalEl.textContent = summary.total;
+  latestEl.textContent = summary.latest;
 }
 
 async function fetchJournalEntries(): Promise<JournalEntry[]> {
   try {
-    const response = await fetch('/api/journal');
-    if (!response.ok) {
-      throw new Error('Failed to fetch journal entries');
-    }
-    const data: unknown = await response.json();
-    return data as JournalEntry[];
+    return await apiRequest<JournalEntry[]>('/api/journal');
   } catch (error) {
     console.error('Error fetching journal entries:', error);
     showMessage('Error loading journal entries', 'error', 'journal-message');
@@ -47,14 +26,9 @@ async function fetchJournalEntries(): Promise<JournalEntry[]> {
   }
 }
 
-async function fetchJournalEntry(filename: string): Promise<JournalEntryResponse> {
+async function fetchJournalEntry(filename: string): Promise<JournalEntryWithContent> {
   try {
-    const response = await fetch(`/api/journal/${filename}`);
-    if (!response.ok) {
-      throw new Error('Failed to fetch journal entry');
-    }
-    const data: unknown = await response.json();
-    return data as JournalEntryResponse;
+    return await apiRequest<JournalEntryWithContent>(`/api/journal/${filename}`);
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Unknown error';
     console.error('Error fetching journal entry:', error);
@@ -63,26 +37,15 @@ async function fetchJournalEntry(filename: string): Promise<JournalEntryResponse
   }
 }
 
-async function submitJournalEntry(content: string): Promise<JournalEntryResponse> {
+async function submitJournalEntry(content: string): Promise<JournalEntryWithContent> {
   try {
-    const response = await fetch('/api/journal', {
+    return await apiRequest<JournalEntryWithContent>('/api/journal', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ content: content.trim() }),
     });
-
-    if (!response.ok) {
-      const errorData: unknown = await response.json();
-      if (isErrorResponse(errorData)) {
-        throw new Error(errorData.error);
-      }
-      throw new Error('Failed to submit journal entry');
-    }
-
-    const data: unknown = await response.json();
-    return data as JournalEntryResponse;
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Unknown error';
     console.error('Error submitting journal entry:', error);
@@ -91,26 +54,15 @@ async function submitJournalEntry(content: string): Promise<JournalEntryResponse
   }
 }
 
-async function updateJournalEntry(filename: string, content: string): Promise<JournalEntryResponse> {
+async function updateJournalEntry(filename: string, content: string): Promise<JournalEntryWithContent> {
   try {
-    const response = await fetch(`/api/journal/${filename}`, {
+    return await apiRequest<JournalEntryWithContent>(`/api/journal/${filename}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ content: content.trim() }),
     });
-
-    if (!response.ok) {
-      const errorData: unknown = await response.json();
-      if (isErrorResponse(errorData)) {
-        throw new Error(errorData.error);
-      }
-      throw new Error('Failed to update journal entry');
-    }
-
-    const data: unknown = await response.json();
-    return data as JournalEntryResponse;
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Unknown error';
     console.error('Error updating journal entry:', error);

@@ -1,66 +1,67 @@
-# Health Tracker
+# Health Dash
 
-Simple weight tracking dashboard with local JSON storage and TypeScript frontend.
+Local-first health dashboard with:
+- Weight tracking + trend chart
+- Workout logging + calendar/timeline
+- Journal entries (markdown + edit)
+- Diet/meal logging + calorie summaries
 
-## Prerequisites
+Data is stored in local JSON/Markdown files under `data/`.
 
-- Python 3.14+
-- Node.js (for pnpm)
-- pnpm
+## Tooling
 
-## Setup
+- Python + Flask backend (`uv`)
+- TypeScript frontend (`pnpm`)
+- Nix + direnv dev shell (`flake.nix`, `.envrc`)
+- Just command runner (`justfile`)
+- Pytest verification baseline
 
-### 1. Install Python dependencies
+## Quick Start
 
 ```bash
-uv sync
-```
-
-### 2. Install Node.js dependencies and build TypeScript
-
-```bash
-pnpm install
+direnv allow
+just install
 pnpm build
+just serve
 ```
 
-This compiles `src/app.ts` to `static/js/app.js`.
+Open: `http://127.0.0.1:5001`
 
 ## Development
 
-Run in two separate terminals:
-
-### Terminal 1: TypeScript watch mode (auto-recompile)
+Run in two terminals:
 
 ```bash
-pnpm watch
+just watch
+just serve
 ```
 
-This watches `src/app.ts` and automatically recompiles to `static/js/app.js` when you save changes.
+## Verification
 
-### Terminal 2: Flask dev server
+Primary gate:
 
 ```bash
-uv run python app.py
+just verify
 ```
 
-## Access
+This runs:
+- `uv run pytest`
+- `pnpm type-check`
 
-- Local: http://localhost:5001
-- Network: http://[YOUR_IP]:5001
+## Project Structure
 
-## TypeScript
+- `backend/`: app factory, route blueprints, services, shared HTTP/storage helpers
+- `app.py`: thin entrypoint
+- `src/`: TypeScript frontend modules
+- `static/css/`: tokens/components/utilities + page styles
+- `templates/`: Flask HTML templates
+- `docs/api/openapi.yaml`: API contract
+- `tests/`: backend and contract tests
 
-The frontend is written in TypeScript for type safety. Source files are in `src/` and compile to `static/js/`.
+## Useful Commands
 
-- **Source**: `src/app.ts` (edit this)
-- **Compiled**: `static/js/app.js` (generated, don't edit)
-- **Source maps**: `static/js/app.js.map` (for debugging)
-
-### Available npm scripts
-
-- `pnpm build` - Compile TypeScript once
-- `pnpm watch` - Auto-compile on file changes
-- `pnpm type-check` - Check types without emitting files
-- `pnpm clean` - Remove compiled files
-
-Press Ctrl+C to stop.
+- `just install` - Sync Python + Node dependencies
+- `just watch` - TypeScript watch
+- `just serve` - Flask dev server
+- `just verify` - tests + type-check
+- `pnpm build` - compile TypeScript

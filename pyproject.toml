@@ -8,3 +8,11 @@ dependencies = [
     "markdown>=3.5",
     "bleach>=6.1",
 ]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.0",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]

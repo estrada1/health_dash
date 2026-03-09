@@ -1,0 +1,280 @@
+openapi: 3.0.3
+info:
+  title: Health Dash API
+  version: 1.0.0
+servers:
+  - url: http://127.0.0.1:5001
+paths:
+  /api/health:
+    get:
+      summary: Healthcheck endpoint
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                required: [status]
+  /api/weights:
+    get:
+      summary: List all weight entries
+      responses:
+        "200":
+          description: Weight entries
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/WeightEntry"
+    post:
+      summary: Create weight entry
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                weight:
+                  type: number
+              required: [weight]
+      responses:
+        "201":
+          description: Created weight entry
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WeightEntry"
+        "400":
+          $ref: "#/components/responses/ErrorResponse"
+  /api/workouts:
+    get:
+      summary: List all workout entries
+      responses:
+        "200":
+          description: Workout entries
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/WorkoutEntry"
+    post:
+      summary: Create workout entry
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                workout_type:
+                  type: string
+                  enum: [Running, Weights, Swim, Yoga]
+                note:
+                  type: string
+              required: [workout_type]
+      responses:
+        "201":
+          description: Created workout entry
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WorkoutEntry"
+        "400":
+          $ref: "#/components/responses/ErrorResponse"
+  /api/meals:
+    get:
+      summary: List all meal entries
+      responses:
+        "200":
+          description: Meal entries
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/MealEntry"
+    post:
+      summary: Create meal entry
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                calories:
+                  type: integer
+                  nullable: true
+                notes:
+                  type: string
+              required: [title]
+      responses:
+        "201":
+          description: Created meal entry
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MealEntry"
+        "400":
+          $ref: "#/components/responses/ErrorResponse"
+  /api/journal:
+    get:
+      summary: List recent journal entries
+      responses:
+        "200":
+          description: Recent journal entries
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/JournalEntry"
+    post:
+      summary: Create journal entry
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                content:
+                  type: string
+              required: [content]
+      responses:
+        "201":
+          description: Created journal entry
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JournalEntryWithContent"
+        "400":
+          $ref: "#/components/responses/ErrorResponse"
+  /api/journal/{filename}:
+    get:
+      summary: Get one journal entry
+      parameters:
+        - in: path
+          name: filename
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Journal entry
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JournalEntryWithContent"
+        "400":
+          $ref: "#/components/responses/ErrorResponse"
+        "404":
+          $ref: "#/components/responses/ErrorResponse"
+    put:
+      summary: Update one journal entry
+      parameters:
+        - in: path
+          name: filename
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                content:
+                  type: string
+              required: [content]
+      responses:
+        "200":
+          description: Updated journal entry
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JournalEntryWithContent"
+        "400":
+          $ref: "#/components/responses/ErrorResponse"
+        "404":
+          $ref: "#/components/responses/ErrorResponse"
+components:
+  responses:
+    ErrorResponse:
+      description: Validation or request error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+      required: [error]
+    WeightEntry:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        weight:
+          type: number
+      required: [timestamp, weight]
+    WorkoutEntry:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        workout_type:
+          type: string
+          enum: [Running, Weights, Swim, Yoga]
+        note:
+          type: string
+      required: [timestamp, workout_type, note]
+    MealEntry:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        title:
+          type: string
+        calories:
+          type: integer
+          nullable: true
+        notes:
+          type: string
+      required: [timestamp, title, calories, notes]
+    JournalEntry:
+      type: object
+      properties:
+        filename:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        html:
+          type: string
+      required: [filename, timestamp, html]
+    JournalEntryWithContent:
+      allOf:
+        - $ref: "#/components/schemas/JournalEntry"
+        - type: object
+          properties:
+            content:
+              type: string
+          required: [content]

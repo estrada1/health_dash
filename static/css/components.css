@@ -1,0 +1,129 @@
+.section-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-soft);
+    border-radius: 12px;
+    box-shadow: var(--shadow-card);
+    padding: 24px;
+    margin-bottom: 16px;
+}
+
+.card-header {
+    margin-bottom: 16px;
+}
+
+.card-copy {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+}
+
+.subsection-block + .subsection-block {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-soft);
+}
+
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.metric-tile {
+    background: linear-gradient(160deg, #f8fcff 0%, var(--bg-muted) 100%);
+    border: 1px solid var(--border-soft);
+    border-radius: 10px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.metric-label {
+    color: var(--text-muted);
+    font-size: 0.84rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.metric-value {
+    color: var(--text-main);
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+label {
+    font-weight: 600;
+    color: #555;
+    font-size: 1rem;
+}
+
+input[type="text"],
+input[type="number"],
+select,
+textarea,
+#weight-input {
+    padding: 12px;
+    font-size: 1rem;
+    border: 2px solid #d4dde8;
+    border-radius: 8px;
+    transition: border-color 0.3s;
+    width: 100%;
+    background-color: #fff;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+select:focus,
+textarea:focus,
+#weight-input:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+
+.submit-btn {
+    padding: 12px 22px;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: white;
+    background-color: var(--accent);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.submit-btn:hover {
+    background-color: var(--accent-dark);
+}
+
+.submit-btn:active {
+    background-color: #217f81;
+}
+
+.message {
+    padding: 12px;
+    border-radius: 4px;
+    margin-top: 15px;
+    font-weight: 500;
+    display: none;
+}
+
+.message.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.message.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}

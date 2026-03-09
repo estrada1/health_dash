@@ -4,7 +4,7 @@ default:
   @just --list
 
 install:
-  uv sync
+  uv sync --all-groups
   pnpm install
 
 build:
@@ -23,3 +23,15 @@ dev:
 
 check:
   pnpm type-check
+
+test-py:
+  uv run pytest
+
+test-e2e:
+  pnpm test:e2e
+
+verify:
+  uv run pytest
+  pnpm type-check
+  pnpm build
+  pnpm test:e2e

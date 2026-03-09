@@ -1,20 +1,14 @@
+import { apiRequest } from './api/client.js';
+import type { WorkoutEntry, WorkoutType } from './api/types.js';
+import { calculateWorkoutsThisWeek } from './lib/summary.js';
 import {
   escapeHtml,
   formatDate,
   formatDateKey,
   formatTime,
   getElement,
-  isErrorResponse,
   showMessage
 } from './shared.js';
-
-type WorkoutType = 'Running' | 'Weights' | 'Swim' | 'Yoga';
-
-interface WorkoutEntry {
-  timestamp: string;
-  workout_type: WorkoutType;
-  note: string;
-}
 
 interface WorkoutsByDate {
   [date: string]: WorkoutEntry[];
@@ -31,26 +25,13 @@ function updateWorkoutSummary(workouts: WorkoutEntry[]): void {
     return;
   }
 
-  const now = new Date();
-  const sevenDaysAgo = new Date(now);
-  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-
-  const count = workouts.filter(workout => {
-    const timestamp = new Date(workout.timestamp);
-    return timestamp >= sevenDaysAgo && timestamp <= now;
-  }).length;
-
+  const count = calculateWorkoutsThisWeek(workouts);
   workoutsWeekEl.textContent = String(count);
 }
 
 async function fetchWorkouts(): Promise<WorkoutEntry[]> {
   try {
-    const response = await fetch('/api/workouts');
-    if (!response.ok) {
-      throw new Error('Failed to fetch workouts');
-    }
-    const data: unknown = await response.json();
-    return data as WorkoutEntry[];
+    return await apiRequest<WorkoutEntry[]>('/api/workouts');
   } catch (error) {
     console.error('Error fetching workouts:', error);
     showMessage('Error loading workout data', 'error', 'workout-message');
@@ -60,7 +41,7 @@ async function fetchWorkouts(): Promise<WorkoutEntry[]> {
 
 async function submitWorkout(workoutType: WorkoutType, note: string): Promise<WorkoutEntry> {
   try {
-    const response = await fetch('/api/workouts', {
+    return await apiRequest<WorkoutEntry>('/api/workouts', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -70,17 +51,6 @@ async function submitWorkout(workoutType: WorkoutType, note: string): Promise<Wo
         note: note.trim()
       }),
     });
-
-    if (!response.ok) {
-      const errorData: unknown = await response.json();
-      if (isErrorResponse(errorData)) {
-        throw new Error(errorData.error);
-      }
-      throw new Error('Failed to submit workout');
-    }
-
-    const data: unknown = await response.json();
-    return data as WorkoutEntry;
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Unknown error';
     console.error('Error submitting workout:', error);

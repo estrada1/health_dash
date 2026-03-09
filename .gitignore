@@ -13,9 +13,13 @@ wheels/
 # Node.js
 node_modules/
 package-lock.json
+.pnpm-store/
+playwright-report/
+test-results/
 
 # TypeScript compiled output
 static/js/app.js
 static/js/app.js.map
 static/js/*.js
 static/js/*.js.map
+static/js/**
