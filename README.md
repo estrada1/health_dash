@@ -27,41 +27,7 @@ just serve
 
 Open: `http://127.0.0.1:5001`
 
-## Development
 
-Run in two terminals:
+## Preview
 
-```bash
-just watch
-just serve
-```
-
-## Verification
-
-Primary gate:
-
-```bash
-just verify
-```
-
-This runs:
-- `uv run pytest`
-- `pnpm type-check`
-
-## Project Structure
-
-- `backend/`: app factory, route blueprints, services, shared HTTP/storage helpers
-- `app.py`: thin entrypoint
-- `src/`: TypeScript frontend modules
-- `static/css/`: tokens/components/utilities + page styles
-- `templates/`: Flask HTML templates
-- `docs/api/openapi.yaml`: API contract
-- `tests/`: backend and contract tests
-
-## Useful Commands
-
-- `just install` - Sync Python + Node dependencies
-- `just watch` - TypeScript watch
-- `just serve` - Flask dev server
-- `just verify` - tests + type-check
-- `pnpm build` - compile TypeScript
+![Health Dash preview](docs/img/dashboard-preview.png)
