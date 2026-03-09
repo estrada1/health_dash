@@ -8,6 +8,8 @@ Local-first health dashboard with:
 
 Data is stored in local JSON/Markdown files under `data/`.
 
+Self-hosting is intended to run with a [Nix flake](https://wiki.nixos.org/wiki/Flakes) and can be made easily accessible to your personal hosts via [tailscale](https://tailscale.com/) or Cloudflare tunnel.
+
 ## Tooling
 
 - Python + Flask backend (`uv`)
